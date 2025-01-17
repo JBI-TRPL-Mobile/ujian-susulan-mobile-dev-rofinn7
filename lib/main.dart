@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:template_project/Provider/CategoryProvider.dart';
 import 'package:template_project/page/homePage.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => Categoryprovider())]));
 }
 
 class MyApp extends StatelessWidget {
