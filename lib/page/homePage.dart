@@ -14,10 +14,16 @@ class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<Categoryprovider>(context, listen: false).loadCategories();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final categoryProvider = Provider.of<Categoryprovider>(context);
-
-    categoryProvider.loadCategories();
 
     return Scaffold(
       appBar: AppBar(
@@ -32,7 +38,6 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: const [
                 Icon(Icons.person, size: 60),
-                // Icon(Icons.leaf, size: 60),
               ],
             ),
           ),
@@ -49,33 +54,25 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Expanded(
-            child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
-              ),
-              itemCount: categoryProvider.category.length,
-              itemBuilder: (context, index) {
-                final category = categoryProvider.category[index];
-                return GestureDetector(
-                  onTap: () {
-                    // categoryProvider.toggleSelection(index);
-                  },
-                  child: Container(
-                    child: Center(
-                      child: Text(
-                        category.name,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
+            child: categoryProvider.category.isEmpty
+                ? const Center(child: CircularProgressIndicator())
+                : LayoutBuilder(
+                    builder: (context, constraints) {
+                      int crossAxisCount = constraints.maxWidth > 600 ? 4 : 2;
+                      return GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: crossAxisCount,
+                          crossAxisSpacing: 8.0,
+                          mainAxisSpacing: 8.0,
                         ),
-                      ),
-                    ),
+                        itemCount: categoryProvider.category.length,
+                        itemBuilder: (context, index) {
+                          final category = categoryProvider.category[index];
+                          return _buildCategoryButton(category.name);
+                        },
+                      );
+                    },
                   ),
-                );
-              },
-            ),
           ),
         ],
       ),
