@@ -89,7 +89,9 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildCategoryButton(String label, {bool isSelected = false}) {
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: () {
+        Navigator.of(context).pushNamed('category');
+      },
       style: ElevatedButton.styleFrom(
         backgroundColor: isSelected ? Colors.yellow : Colors.grey[200],
         foregroundColor: isSelected ? Colors.black : Colors.grey,

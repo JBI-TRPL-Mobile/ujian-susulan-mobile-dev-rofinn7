@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:template_project/Provider/CategoryProvider.dart';
+import 'package:template_project/page/detail_category.dart';
 import 'package:template_project/page/homePage.dart';
 
 void main() {
@@ -19,7 +20,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
-      routes: {'/': (context) => HomePage()},
+      routes: {
+        '/': (context) => HomePage(),
+        'category': (context) => DetailCategory()
+      },
     );
   }
 }
