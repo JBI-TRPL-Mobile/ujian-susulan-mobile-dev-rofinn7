@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:template_project/Provider/CategoryProvider.dart';
 import 'package:template_project/Widget/BottomNavigation.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,6 +15,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final categoryProvider = Provider.of<Categoryprovider>(context);
+
+    categoryProvider.loadCategories();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Shop Seeds'),
@@ -43,19 +49,32 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Expanded(
-            child: GridView.count(
-              padding: const EdgeInsets.all(16.0),
-              crossAxisCount: 2,
-              crossAxisSpacing: 8,
-              mainAxisSpacing: 8,
-              children: [
-                _buildCategoryButton('Veggies'),
-                _buildCategoryButton('Flowers', isSelected: true),
-                _buildCategoryButton('Perennials'),
-                _buildCategoryButton('Annuals'),
-                _buildCategoryButton('Shrubs'),
-                _buildCategoryButton('Herbs'),
-              ],
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8,
+              ),
+              itemCount: categoryProvider.category.length,
+              itemBuilder: (context, index) {
+                final category = categoryProvider.category[index];
+                return GestureDetector(
+                  onTap: () {
+                    // categoryProvider.toggleSelection(index);
+                  },
+                  child: Container(
+                    child: Center(
+                      child: Text(
+                        category.name,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
           ),
         ],

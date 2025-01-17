@@ -5,7 +5,9 @@ import 'package:template_project/page/homePage.dart';
 
 void main() {
   runApp(MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => Categoryprovider())]));
+    providers: [ChangeNotifierProvider(create: (_) => Categoryprovider())],
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
